@@ -8,50 +8,19 @@ include_once '../config.php';
 // 便利な関数を読み込み
 include_once '../util.php';
  
-//ログインチェック
+// ツイートデータ操作モデルを読み込む
+include_once '../Models/tweets.php';
+ 
+// ログインしているか
 $user = getUserSession();
-//var_dump($_SESSION);
-//exit;
 if (!$user) {
-    //ログインしていない
-    header('Location: ' .HOME_URL . 'controllers/sign-in.php');
+    // ログインしていない
+    header('Location: ' . HOME_URL . 'Controllers/sign-in.php');
     exit;
 }
-
-//表示用の変数
-$view_user = $user;
-// ツイート一覧
-///TODO: モデルから取得する
-$view_tweets = [
-    [
-        'user_id' => 1,
-        'user_name' => 'taro',
-        'user_nickname' => '太郎',
-        'user_image_name' => 'sample-person.jpg',
-        'tweet_body' => '今プログラミングをしています。',
-        'tweet_image_name' => null,
-        'tweet_created_at' => '2023-09-12 14:00:00',
-        'like_id' => null,
-        'like_count' => 0,
-    ],
-    [
-        'user_id' => 2,
-        'user_name' => 'jiro',
-        'user_nickname' => '次郎',
-        'user_image_name' => null,
-        'tweet_body' => 'コワーキングスペースをオープンしました！',
-        'tweet_image_name' => 'sample-post.jpg',
-        'tweet_created_at' => '2023-09-12 14:00:00',
-        'like_id' => 1,
-        'like_count' => 1,
-    ]
-];
-
-// 設定関連を読み込む
-include_once('../config.php');
-// 便利な関数を読み込む
-include_once('../util.php');
-
  
 // 画面表示
+$view_user = $user;
+// ツイート一覧
+$view_tweets = findTweets($user);
 include_once '../Views/home.php';
